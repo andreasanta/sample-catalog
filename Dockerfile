@@ -17,3 +17,6 @@ COPY . /code/
 
 # Expose default django port
 EXPOSE 8000
+
+RUN chmod +x /code/docker-entrypoint.sh
+ENTRYPOINT ["/code/docker-entrypoint.sh"]
