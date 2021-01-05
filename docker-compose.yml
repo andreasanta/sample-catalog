@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  springcat_db:
+    image: postgres:13.1
+    environment:
+      - POSTGRES_PASSWORD=springcat
+      - POSTGRES_USER=springcat
+    ports:
+      - '5432:5432'
+    volumes:
+      - springcat_db_data:/var/lib/postgresql/data
+    networks:
+      - springcat
+
+  springcat_web:
+    build: .
+    working_dir: /code/
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+    depends_on:
+      - springcat_db
+    networks:
+      - springcat
+
+volumes:
+  springcat_db_data:
+
+networks:
+  springcat:
+    driver: bridge
